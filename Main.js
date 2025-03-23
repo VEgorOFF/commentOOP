@@ -24,8 +24,6 @@ function mainStart() {
   workSort();
   plusMinusButtons.workPlusMinusButtonsComments();
   plusMinusButtons.workPlusMinusButtonsAnswers();
-  // sortComments.workSort();
-  // send.workSendComment();
   workSendComment();
 }
 
@@ -77,10 +75,7 @@ function workSendComment() {
     //отправка комментария
     const newComment = document.createElement("div");
     newComment.className = "comment_people author_comments";
-    newComment.setAttribute(
-      "data-index",
-      document.querySelectorAll(".comment_people").length
-    );
+    newComment.setAttribute("data-index", document.querySelectorAll(".comment_people").length);
 
     const authorAndMessage = document.createElement("div");
     authorAndMessage.className = "author_and_message";
@@ -94,32 +89,19 @@ function workSendComment() {
     const cloneAuthorName = authorName.cloneNode(true);
     const timeComment = document.createElement("div");
     timeComment.className = "date_and_time";
-    timeComment.innerText = `${padTo2Digits(nowTime.getDate())}.${padTo2Digits(
-      nowTime.getMonth() + 1
-    )} ${padTo2Digits(nowTime.getHours())}:${padTo2Digits(
-      nowTime.getMinutes()
-    )}`;
-    localStorage.setItem(
-      `dateAuthorComment${indexAuthorComment}`,
-      timeComment.textContent
-    );
+    timeComment.innerText = `${padTo2Digits(nowTime.getDate())}.${padTo2Digits(nowTime.getMonth() + 1)} ${padTo2Digits(nowTime.getHours())}:${padTo2Digits(nowTime.getMinutes())}`;
+    localStorage.setItem(`dateAuthorComment${indexAuthorComment}`, timeComment.textContent);
     const commentText = document.createElement("div");
     commentText.className = "comment_text";
     commentText.innerText = `${textArea.value}`;
-    localStorage.setItem(
-      `authorComment${indexAuthorComment}`,
-      commentText.textContent
-    );
+    localStorage.setItem(`authorComment${indexAuthorComment}`, commentText.textContent);
 
     const underText = document.createElement("div");
     underText.className = "under_text";
     let likeRandom;
     likeRandom = random(0, 10);
     underText.innerHTML = `<div class="button_answer"><img src="images/otvet.svg" alt="otvet" /><p>Ответить</p></div><div class="button_favorites"><img src="images/izbran.svg" alt="izbran" /><p>В избранное</p></div><div><button class="button_minus">-</button><p class="number_likes">${likeRandom}</p><button class="button_plus">+</button></div>`;
-    localStorage.setItem(
-      `like${newComment.getAttribute("data-index")}`,
-      likeRandom
-    );
+    localStorage.setItem(`like${newComment.getAttribute("data-index")}`, likeRandom);
     authorAndText.appendChild(cloneAuthorName);
     authorAndText.appendChild(timeComment);
     authorAndMessage.appendChild(cloneAuthorAvatar);
@@ -146,22 +128,13 @@ function workSendComment() {
 }
 
 function workSendAnswers(messageAtributeIndex) {
-  document.getElementById("form_answer").style =
-    "display: grid padding-left: 91px";
+  document.getElementById("form_answer").style = "display: grid padding-left: 91px";
   document.getElementById("form_answer").style = "padding-left: 91px";
 
-  const buttonSendAnswer = document
-    .querySelector("#form_answer")
-    .querySelector(".send");
-  const textAreaAnswer = document
-    .querySelector("#form_answer")
-    .querySelector(".message");
-  const maxTextAnswer = document
-    .querySelector("#form_answer")
-    .querySelector(".max_text");
-  const warningTextAnswer = document
-    .querySelector("#form_answer")
-    .querySelector(".warning_text");
+  const buttonSendAnswer = document.querySelector("#form_answer").querySelector(".send");
+  const textAreaAnswer = document.querySelector("#form_answer").querySelector(".message");
+  const maxTextAnswer = document.querySelector("#form_answer").querySelector(".max_text");
+  const warningTextAnswer = document.querySelector("#form_answer").querySelector(".warning_text");
 
   let indexAuthorAnswer;
   if (localStorage.getItem("indexAuthorAnswer") !== null) {
@@ -217,11 +190,13 @@ function workSendAnswers(messageAtributeIndex) {
     const timeComment = document.createElement("div");
     var nowTime = new Date();
     timeComment.className = "date_and_time";
-    timeComment.innerText = `${padTo2Digits(nowTime.getDate())}.${padTo2Digits(
-      nowTime.getMonth() + 1
-    )} ${padTo2Digits(nowTime.getHours())}:${padTo2Digits(
-      nowTime.getMinutes()
-    )}`;
+    timeComment.innerText = `${padTo2Digits(nowTime.getDate())}.${padTo2Digits(nowTime.getMonth() + 1)} ${padTo2Digits(nowTime.getHours())}:${padTo2Digits(nowTime.getMinutes())}`;
+
+    const arrowAnswer = document.createElement("img");
+    arrowAnswer.src = "images/otvet.svg";
+    arrowAnswer.alt = "ответ";
+    const nameAuthorComment = document.createElement("div");
+    nameAuthorComment.className = "name_author_comment";
 
     const commentText = document.createElement("div");
     commentText.className = "comment_text";
@@ -234,6 +209,8 @@ function workSendAnswers(messageAtributeIndex) {
     underText.innerHTML = `<div class="button_favorites"><img src="images/izbran.svg" alt="izbran" /><p>В избранное</p></div><div><button class="button_minus">-</button><p class="number_likes">${likeRandom}</p><button class="button_plus">+</button></div>`;
 
     authorAndText.appendChild(cloneAuthorName);
+    authorAndText.appendChild(arrowAnswer);
+    authorAndText.appendChild(nameAuthorComment);
     authorAndText.appendChild(timeComment);
     authorAndMessage.appendChild(underText);
     authorAndMessage.appendChild(commentText);
@@ -241,14 +218,11 @@ function workSendAnswers(messageAtributeIndex) {
     authorAndMessage.appendChild(avatarAuthor);
     answer.appendChild(authorAndMessage);
 
-    document
-      .querySelector(`.comment_people[data-index="${messageAtributeIndex}"]`)
-      .appendChild(answer);
+    document.querySelector(`.comment_people[data-index="${messageAtributeIndex}"]`).appendChild(answer);
 
-    answer.setAttribute(
-      "data-index",
-      answer.closest(".comment_people").querySelectorAll(".answer").length - 1
-    );
+    answer.setAttribute("data-index", answer.closest(".comment_people").querySelectorAll(".answer").length - 1);
+
+    nameAuthorComment.innerText = `${nameAuthorComment.closest(".comment_people").querySelector(".name_author").textContent}`;
 
     textAreaAnswer.value = "";
     textAreaAnswer.style.height = "43.531px";
@@ -259,30 +233,10 @@ function workSendAnswers(messageAtributeIndex) {
 
     document.getElementById("form_answer").remove();
 
-    localStorage.setItem(
-      `likeAnswer${answer
-        .closest(".comment_people")
-        .getAttribute("data-index")}.index${answer.getAttribute("data-index")}`,
-      likeRandom
-    );
-    localStorage.setItem(
-      `idAnswerParent${answer
-        .closest(".comment_people")
-        .getAttribute("data-index")}.index${answer.getAttribute("data-index")}`,
-      answer.closest(".comment_people").getAttribute("data-index")
-    );
-    localStorage.setItem(
-      `dateAnswer${answer
-        .closest(".comment_people")
-        .getAttribute("data-index")}.index${answer.getAttribute("data-index")}`,
-      timeComment.textContent
-    );
-    localStorage.setItem(
-      `authorAnswer${answer
-        .closest(".comment_people")
-        .getAttribute("data-index")}.index${answer.getAttribute("data-index")}`,
-      commentText.textContent
-    );
+    localStorage.setItem(`likeAnswer${answer.closest(".comment_people").getAttribute("data-index")}.index${answer.getAttribute("data-index")}`, likeRandom);
+    localStorage.setItem(`idAnswerParent${answer.closest(".comment_people").getAttribute("data-index")}.index${answer.getAttribute("data-index")}`, answer.closest(".comment_people").getAttribute("data-index"));
+    localStorage.setItem(`dateAnswer${answer.closest(".comment_people").getAttribute("data-index")}.index${answer.getAttribute("data-index")}`, timeComment.textContent);
+    localStorage.setItem(`authorAnswer${answer.closest(".comment_people").getAttribute("data-index")}.index${answer.getAttribute("data-index")}`, commentText.textContent);
     indexAuthorAnswer++;
     localStorage.setItem("indexAuthorAnswer", indexAuthorAnswer);
     plusMinusButtons.workPlusMinusButtonsAnswers();
@@ -302,17 +256,13 @@ document.addEventListener("click", (event) => {
       }
     });
 
-    const index = event.target
-      .closest(".button_answer")
-      .getAttribute("data-index");
+    const index = event.target.closest(".button_answer").getAttribute("data-index");
     const formSend = document.querySelector(".comment_author");
     const cloneFormSend = formSend.cloneNode(true);
     cloneFormSend.className += " copy_form_answer";
     cloneFormSend.id = "form_answer";
 
-    document
-      .querySelector(`.comment_people[data-index="${index}"]`)
-      .appendChild(cloneFormSend);
+    document.querySelector(`.comment_people[data-index="${index}"]`).appendChild(cloneFormSend);
     workSendAnswers(index);
   }
 });
@@ -322,70 +272,32 @@ document.addEventListener("click", (event) => {
   const buttonFavorites = event.target.closest(".button_favorites");
 
   if (buttonFavorites) {
-    const id = event.target
-      .closest(".comment_people")
-      .getAttribute("data-index");
+    const id = event.target.closest(".comment_people").getAttribute("data-index");
 
     if (event.target.closest(".answer") !== null) {
-      if (
-        buttonFavorites.hasAttribute(
-          `active-favorites${id}-${buttonFavorites
-            .closest(".answer")
-            .getAttribute("data-index")}`
-        )
-      ) {
-        localStorage.removeItem(
-          `active-favorites${id}.${buttonFavorites
-            .closest(".answer")
-            .getAttribute("data-index")}`
-        );
-        buttonFavorites.removeAttribute(
-          `active-favorites${id}-${buttonFavorites
-            .closest(".answer")
-            .getAttribute("data-index")}`
-        );
+      if (buttonFavorites.hasAttribute(`active-favorites${id}-${buttonFavorites.closest(".answer").getAttribute("data-index")}`)) {
+        localStorage.removeItem(`active-favorites${id}.${buttonFavorites.closest(".answer").getAttribute("data-index")}`);
+        buttonFavorites.removeAttribute(`active-favorites${id}-${buttonFavorites.closest(".answer").getAttribute("data-index")}`);
         buttonFavorites.style = "color: black";
-        buttonFavorites.innerHTML =
-          '<img src="images/izbran.svg" alt="izbran" /><p>В избранное</p>';
+        buttonFavorites.innerHTML = '<img src="images/izbran.svg" alt="izbran" /><p>В избранное</p>';
       } else {
         buttonFavorites.style = "color: red";
         buttonFavorites.innerHTML = "<p>В избранном</p>";
-        buttonFavorites.setAttribute(
-          `active-favorites${id}-${buttonFavorites
-            .closest(".answer")
-            .getAttribute("data-index")}`,
-          true
-        );
-        localStorage.setItem(
-          `active-favorites${id}.${buttonFavorites
-            .closest(".answer")
-            .getAttribute("data-index")}`,
-          buttonFavorites.getAttribute(
-            `active-favorites${id}-${buttonFavorites
-              .closest(".answer")
-              .getAttribute("data-index")}`
-          )
-        );
+        buttonFavorites.setAttribute(`active-favorites${id}-${buttonFavorites.closest(".answer").getAttribute("data-index")}`, true);
+        localStorage.setItem(`active-favorites${id}.${buttonFavorites.closest(".answer").getAttribute("data-index")}`, buttonFavorites.getAttribute(`active-favorites${id}-${buttonFavorites.closest(".answer").getAttribute("data-index")}`));
       }
     } else {
-      if (
-        buttonFavorites.hasAttribute(`active-favorites${id}`) &&
-        localStorage.getItem(`active-favorites${id}`) !== null
-      ) {
+      if (buttonFavorites.hasAttribute(`active-favorites${id}`) && localStorage.getItem(`active-favorites${id}`) !== null) {
         buttonFavorites.removeAttribute(`active-favorites${id}`);
         localStorage.removeItem(`active-favorites${id}`);
         buttonFavorites.style = "color: black";
-        buttonFavorites.innerHTML =
-          '<img src="images/izbran.svg" alt="izbran" /><p>В избранное</p>';
+        buttonFavorites.innerHTML = '<img src="images/izbran.svg" alt="izbran" /><p>В избранное</p>';
       } else {
         buttonFavorites.style = "color: red";
         buttonFavorites.innerHTML = "<p>В избранном</p>";
 
         buttonFavorites.setAttribute(`active-favorites${id}`, true);
-        localStorage.setItem(
-          `active-favorites${id}`,
-          buttonFavorites.getAttribute(`active-favorites${id}`)
-        );
+        localStorage.setItem(`active-favorites${id}`, buttonFavorites.getAttribute(`active-favorites${id}`));
       }
     }
   }
@@ -397,164 +309,35 @@ function workSort() {
   const sortCountLikes = document.getElementById("count_likes");
   const sortActual = document.getElementById("actual");
   const sortCountAnswers = document.getElementById("count_answers");
+  const arrow = document.getElementById("arrow");
 
   sortName.innerHTML = sortActual.querySelector("p").textContent;
 
   sortDate.addEventListener("click", function () {
     sortName.innerHTML = sortDate.querySelector("p").textContent;
-
-    workSortDateComments();
+    arrow.style.transform = "rotate(0deg)";
+    arrow.style.transition = "500ms ease-out";
+    sortComments.workSortDateComments();
   });
 
   sortCountLikes.addEventListener("click", function () {
     sortName.innerHTML = sortCountLikes.querySelector("p").textContent;
-
-    workSortLikes();
+    arrow.style.transform = "rotate(0deg)";
+    arrow.style.transition = "500ms ease-out";
+    sortComments.workSortLikes();
   });
 
   sortActual.addEventListener("click", function () {
     sortName.innerHTML = sortActual.querySelector("p").textContent;
+    arrow.style.transform = "rotate(0deg)";
+    arrow.style.transition = "500ms ease-out";
   });
 
   sortCountAnswers.addEventListener("click", function () {
     sortName.innerHTML = sortCountAnswers.querySelector("p").textContent;
-
-    workSortCountAnswers();
-  });
-}
-
-function workSortDateComments() {
-  const allComments = document.querySelector(".allComments");
-  let arrAllComments = Array.from(allComments.children);
-
-  let sortArrAllComments = arrAllComments.sort(
-    (a, b) =>
-      new Date(b.querySelector(".date_and_time").textContent) -
-      new Date(a.querySelector(".date_and_time").textContent)
-  );
-  console.log(arrAllComments);
-  sortArrAllComments.forEach((el) =>
-    document.querySelector(".allComments").appendChild(el)
-  );
-
-  const arrow = document.getElementById("arrow");
-  let isAgain = false;
-  arrow.addEventListener("click", function () {
-    if (!isAgain) {
-      sortArrAllComments = arrAllComments.sort((a, b) => {
-        new Date(a.querySelector(".date_and_time").textContent) -
-          new Date(b.querySelector(".date_and_time").textContent);
-      });
-
-      sortArrAllComments.forEach((el) =>
-        document.querySelector(".allComments").appendChild(el)
-      );
-
-      arrow.style.transform = "rotate(180deg)";
-      arrow.style.transition = "500ms ease-out";
-      isAgain = true;
-    } else {
-      sortArrAllComments = arrAllComments.sort(
-        (a, b) =>
-          new Date(b.querySelector(".date_and_time").textContent) -
-          new Date(a.querySelector(".date_and_time").textContent)
-      );
-      sortArrAllComments.forEach((el) =>
-        document.querySelector(".allComments").appendChild(el)
-      );
-
-      arrow.style.transform = "rotate(360deg)";
-      arrow.style.transition = "500ms ease-out";
-      isAgain = false;
-    }
-  });
-}
-
-function workSortCountAnswers() {
-  const allComments = document.querySelector(".allComments");
-  let arrAllComments = Array.from(allComments.children);
-  let sortArrAllComments = arrAllComments.sort(
-    (a, b) =>
-      b.querySelectorAll(".answer").length -
-      a.querySelectorAll(".answer").length
-  );
-
-  sortArrAllComments.forEach((el) =>
-    document.querySelector(".allComments").appendChild(el)
-  );
-
-  const arrow = document.getElementById("arrow");
-  let isAgain = false;
-  arrow.addEventListener("click", function () {
-    if (!isAgain) {
-      sortArrAllComments = arrAllComments.sort(
-        (a, b) =>
-          a.querySelectorAll(".answer").length -
-          b.querySelectorAll(".answer").length
-      );
-      sortArrAllComments.forEach((el) =>
-        document.querySelector(".allComments").appendChild(el)
-      );
-      arrow.style.transform = "rotate(180deg)";
-      arrow.style.transition = "500ms ease-out";
-      isAgain = true;
-    } else {
-      sortArrAllComments = arrAllComments.sort(
-        (a, b) =>
-          b.querySelectorAll(".answer").length -
-          a.querySelectorAll(".answer").length
-      );
-      sortArrAllComments.forEach((el) =>
-        document.querySelector(".allComments").appendChild(el)
-      );
-      arrow.style.transform = "rotate(360deg)";
-      arrow.style.transition = "500ms ease-out";
-      isAgain = false;
-    }
-  });
-}
-
-function workSortLikes() {
-  const allComments = document.querySelector(".allComments");
-  let arrAllComments = Array.from(allComments.children);
-  let sortArrAllComments = arrAllComments.sort(
-    (a, b) =>
-      b.querySelector(".number_likes").textContent -
-      a.querySelector(".number_likes").textContent
-  );
-
-  sortArrAllComments.forEach((el) =>
-    document.querySelector(".allComments").appendChild(el)
-  );
-
-  const arrow = document.getElementById("arrow");
-  let isAgain = false;
-  arrow.addEventListener("click", function () {
-    if (!isAgain) {
-      sortArrAllComments = arrAllComments.sort(
-        (a, b) =>
-          a.querySelector(".number_likes").textContent -
-          b.querySelector(".number_likes").textContent
-      );
-      sortArrAllComments.forEach((el) =>
-        document.querySelector(".allComments").appendChild(el)
-      );
-      arrow.style.transform = "rotate(180deg)";
-      arrow.style.transition = "500ms ease-out";
-      isAgain = true;
-    } else {
-      sortArrAllComments = arrAllComments.sort(
-        (a, b) =>
-          b.querySelector(".number_likes").textContent -
-          a.querySelector(".number_likes").textContent
-      );
-      sortArrAllComments.forEach((el) =>
-        document.querySelector(".allComments").appendChild(el)
-      );
-      arrow.style.transform = "rotate(360deg)";
-      arrow.style.transition = "500ms ease-out";
-      isAgain = false;
-    }
+    arrow.style.transform = "rotate(0deg)";
+    arrow.style.transition = "500ms ease-out";
+    sortComments.workSortCountAnswers();
   });
 }
 
